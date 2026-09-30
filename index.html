@@ -3,22 +3,35 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<link rel="icon" href="favicon.png" type="image/png">
 <title>ELLA — Informação que vira cuidado</title>
 <link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:wght@500;700;800&family=Source+Sans+3:wght@400;600&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="style.css">
 </head>
 <body>
 <header>
-<span class="logo"><span class="emb-slot" aria-hidden="false"></span>ELLA</span>
+<span class="logo"><img class="logo-img" src="logo.png" alt="">ELLA</span>
 <nav id="nav" aria-label="Seções"></nav>
 <button class="exit" onclick="location.replace('https://www.google.com.br')" title="Sair rápido desta página">Sair rápido</button>
 </header>
 <main>
 <section class="view on" id="inicio">
-<div class="hero"><div class="emb-slot big-emb"></div><div class="tag">Informação que vira cuidado</div>
+<div class="hero"><div class="hero2"><div class="htxt"><div class="tag">Informação que vira cuidado</div>
 <h1>Cuidar da saúde não deveria depender de lembrar de tudo.</h1>
 <p>A ELLA ajuda mulheres e pessoas com colo do útero a organizar exames, consultas e ciclo, entender sua saúde com fontes oficiais e encontrar o serviço certo no SUS.</p>
-<button class="btn" onclick="go('saude')">Começar minha jornada</button></div>
+<div class="row acts"><button class="btn" onclick="go('saude')">Começar minha jornada</button><button class="btn alt" onclick="document.getElementById('imperatriz').scrollIntoView({behavior:'smooth'})">Por que a Imperatriz?</button></div></div>
+<figure class="arch"><img src="imperatriz.jpg" alt="Ilustração da Imperatriz em tons de rosa: mulher serena de cabelos ondulados e coroa de folhas, sob um arco com sol e lua, cercada de folhas, flores e romãs"><figcaption>A Imperatriz · nossa inspiração</figcaption></figure></div>
+<div class="orn" aria-hidden="true"><span>✿</span><span>❦</span><span>✿</span></div>
+<section id="imperatriz" class="emp"><h2>A Imperatriz: o símbolo do ELLA</h2>
+<p class="lead">No Tarô, a Imperatriz é a terceira carta dos Arcanos Maiores. Ela representa o cuidado, a abundância, a natureza, a criatividade e a força serena de quem acolhe. Escolhemos essa imagem pelo que ela simboliza, como linguagem cultural: o ELLA não faz previsões nem tem caráter esotérico, e não substitui o cuidado de profissionais de saúde.</p>
+<div class="grid">
+<div class="card sym"><span>☀</span><h3>Halo de raios</h3><p>Conhecimento e clareza. É a informação de boa qualidade iluminando o caminho.</p></div>
+<div class="card sym"><span>♡</span><h3>Corações</h3><p>Cuidado consigo e com as outras mulheres, sem culpa e sem julgamento.</p></div>
+<div class="card sym"><span>❀</span><h3>Plantas e flores</h3><p>Crescimento e ciclos: o corpo tem tempos e merece ser acompanhado com atenção.</p></div>
+<div class="card sym"><span>☾</span><h3>Luas</h3><p>Ciclos e passagem do tempo, como o ciclo menstrual e as fases da vida.</p></div>
+<div class="card sym"><span>✦</span><h3>Braços abertos</h3><p>Acolhimento: a porta de entrada para o cuidado deve ser sempre receptiva.</p></div>
+<div class="card sym"><span>❖</span><h3>Postura serena</h3><p>Força e autonomia: decidir sobre a própria saúde com informação e apoio.</p></div></div>
+<p class="note">Na ELLA, a Imperatriz se traduz em três verbos: <b>acolher</b> (linguagem simples e respeitosa), <b>informar</b> (conteúdos com fontes oficiais) e <b>conectar</b> (da informação ao exame, à consulta e ao serviço de saúde).</p></section>
 <h2 style="margin-top:28px">Como a ELLA acolhe, informa e conecta</h2>
 <div class="grid"><div class="card"><h3>Acolhe</h3><p>Linguagem simples, sem julgamento, para mulheres de todas as idades, incluindo mulheres trans e jovens.</p></div><div class="card"><h3>Informa</h3><p>Conteúdos com links para o Ministério da Saúde, INCA e outras fontes oficiais.</p></div><div class="card"><h3>Conecta</h3><p>Leva da informação à ação: cadastrar um exame, criar um lembrete ou buscar uma unidade.</p></div></div>
 <h2>Áreas da plataforma</h2><div class="grid" id="atalhos"></div>
@@ -121,7 +134,7 @@
 <div class="note">Fonte: material didático de Enfermagem (2009) enviado pelo grupo, com referências à OMS/FIGO e ao Código Penal. Confirme dados, prazos e condutas nas normas atuais do Ministério da Saúde. <a href="https://www.gov.br/saude/pt-br/assuntos/saude-de-a-a-z/s/saude-da-mulher/saude-materna" target="_blank" rel="noopener">Saúde materna</a>.</div>
 </section>
 </main>
-<footer><p>"O ELLA é uma plataforma de informação e organização em saúde. Ele não substitui avaliação, diagnóstico ou acompanhamento realizado por profissionais de saúde." Em urgência, ligue 192. <button class="lk" onclick="go('referencias')">Fontes oficiais</button></p></footer>
+<footer><img class="lockup" src="lockup.png" alt="ELLA — Informação que vira cuidado"><p>"O ELLA é uma plataforma de informação e organização em saúde. Ele não substitui avaliação, diagnóstico ou acompanhamento realizado por profissionais de saúde." Em urgência, ligue 192. <button class="lk" onclick="go('referencias')">Fontes oficiais</button></p></footer>
 <div id="toast" role="status" aria-live="polite"></div>
 <script src="script.js"></script>
 </body>

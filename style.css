@@ -78,3 +78,26 @@ li.done b{text-decoration:line-through;color:var(--mut)}
 #toast.on{opacity:1;transform:translate(-50%,0)}
 @media(max-width:560px){ul.list li{flex-direction:column;align-items:flex-start}.acts2{justify-content:flex-start}}
 @media print{header,footer,.no-print,.btn,.lk,#toast,.stabs{display:none!important}}
+
+/* ===== v4: Imperatriz e ornamentos ===== */
+body{background:radial-gradient(circle at 10% 0,var(--soft) 0,transparent 35%),radial-gradient(circle at 100% 30%,var(--soft) 0,transparent 30%),var(--bg)}
+.logo{display:flex;align-items:center;gap:10px}
+.logo-img{width:42px;height:42px;border-radius:50%;border:2px solid var(--mid);object-fit:cover}
+.hero2{display:grid;gap:26px;align-items:center;padding:24px 0}
+@media(min-width:760px){.hero2{grid-template-columns:1.3fr 1fr}}
+.hero2 h1{font-size:clamp(2rem,6vw,3.3rem);font-weight:800;max-width:14em}
+.arch{margin:0 auto;max-width:320px;text-align:center}
+.arch img{width:100%;display:block;border-radius:999px 999px 26px 26px;border:6px solid #fff;box-shadow:0 14px 40px rgba(157,69,111,.25)}
+.arch figcaption{margin-top:10px;font:italic .9rem "Source Sans 3",serif;color:var(--mut)}
+.orn{display:flex;align-items:center;justify-content:center;gap:14px;color:var(--mid);margin:18px 0;font-size:1.2rem}
+.orn::before,.orn::after{content:"";height:1px;flex:1;background:linear-gradient(90deg,transparent,var(--mid))}
+.orn::after{transform:scaleX(-1)}
+.emp{background:var(--card);border:1px solid var(--line);border-radius:28px;padding:22px;margin-bottom:22px}
+.sym{text-align:center}.sym span{font-size:1.7rem;color:var(--mid);display:block}
+.tag::before{content:"✿ "}
+
+/* ===== v5: arte final da marca ===== */
+.arch{max-width:360px}
+.arch img{border:0;border-radius:28px;box-shadow:0 14px 40px rgba(157,69,111,.18)}
+.lockup{display:block;width:150px;margin:0 auto 14px;border-radius:16px}
+footer{text-align:center}
