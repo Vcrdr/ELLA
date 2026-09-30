@@ -6,7 +6,6 @@
 <title>ELLA — Informação que vira cuidado</title>
 <meta name="description" content="ELLA: plataforma de informação e organização em saúde preventiva da mulher, com foco no acesso aos serviços públicos de saúde do Brasil.">
 <meta name="theme-color" content="#fff7f9">
-<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Cpath d='M8 60V28a24 24 0 0 1 48 0v32z' fill='%23c2456d'/%3E%3Ccircle cx='32' cy='30' r='7' fill='%23fff7f9'/%3E%3C/svg%3E">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,600;9..144,700&family=Figtree:wght@400;500;600;700&display=swap" rel="stylesheet">
@@ -22,9 +21,9 @@
       <span class="brand-name">ELLA</span>
     </a>
     <div class="top-actions">
-      <button class="btn ghost sm" id="btn-menu" aria-expanded="false" aria-controls="nav">Menu</button>
+      <button class="btn ghost sm" id="btn-menu" type="button" aria-expanded="false" aria-controls="nav">Menu</button>
       <span id="user-area"></span>
-      <button class="btn danger sm" data-act="sair-rapido" title="Sai do site imediatamente">Sair rápido</button>
+      <button class="btn danger sm" id="quick-exit" type="button">Sair rápido</button>
     </div>
   </div>
   <nav id="nav" aria-label="Menu principal"></nav>
@@ -40,7 +39,7 @@
     </div>
     <ul class="foot-links">
       <li><a href="#/sobre">Sobre o ELLA</a></li>
-      <li><a href="#/privacidade">Política de privacidade</a></li>
+      <li><a href="#/privacidade">Privacidade</a></li>
       <li><a href="#/acessibilidade">Acessibilidade</a></li>
       <li><a href="#/fontes">Fontes</a></li>
       <li><a href="#/servicos-publicos">Serviços públicos</a></li>
@@ -62,20 +61,20 @@
   </form>
 </dialog>
 
-<!-- Emblema da ELLA: símbolo original inspirado na Imperatriz do Tarô (coroa de 12 estrelas, coração-escudo, espigas e folhas) -->
 <svg width="0" height="0" style="position:absolute" aria-hidden="true" focusable="false">
   <defs>
     <symbol id="emblema" viewBox="0 0 64 64">
       <path d="M6 61V29a26 26 0 0 1 52 0v32z" fill="none" stroke="currentColor" stroke-width="2"/>
       <g fill="currentColor">
         <circle cx="32" cy="9" r="1.6"/><circle cx="24.5" cy="11" r="1.4"/><circle cx="39.5" cy="11" r="1.4"/>
-        <circle cx="19" cy="16.5" r="1.4"/><circle cx="45" cy="16.5" r="1.4"/><circle cx="17" cy="24" r="1.3"/><circle cx="47" cy="24" r="1.3"/>
+        <circle cx="19" cy="16.5" r="1.4"/><circle cx="45" cy="16.5" r="1.4"/>
+        <circle cx="17" cy="24" r="1.3"/><circle cx="47" cy="24" r="1.3"/>
       </g>
       <circle cx="32" cy="27" r="6" fill="currentColor"/>
       <path d="M17 61c0-13 6-20 15-20s15 7 15 20z" fill="currentColor" opacity=".9"/>
-      <path d="M32 55.5s-5-3-5-6.6a2.9 2.9 0 0 1 5-1.6 2.9 2.9 0 0 1 5 1.6c0 3.600-5 6.600-5 6.600z" fill="var(--emb-bg,#fff7f9)"/>
-      <path d="M10 56c1-6 3-10 6-13M13 47c-2-1-3-3-3-5 2 0 3.500 1.500 3 5zM15 43c-2-1-2-3-2-5 2 0 3 2 2 5z" fill="none" stroke="currentColor" stroke-width="1.400" stroke-linecap="round"/>
-      <path d="M54 56c-1-6-3-10-6-13M51 47c2-1 3-3 3-5-2 0-3.500 1.500-3 5zM49 43c2-1 2-3 2-5-2 0-3 2-2 5z" fill="none" stroke="currentColor" stroke-width="1.400" stroke-linecap="round"/>
+      <path d="M32 55.5s-5-3-5-6.6a2.9 2.9 0 0 1 5-1.6 2.9 2.9 0 0 1 5 1.6c0 3.6-5 6.6-5 6.6z" fill="var(--emb-bg,#fff7f9)"/>
+      <path d="M10 56c1-6 3-10 6-13M13 47c-2-1-3-3-3-5 2 0 3.5 1.5 3 5zM15 43c-2-1-2-3-2-5 2 0 3 2 2 5z" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"/>
+      <path d="M54 56c-1-6-3-10-6-13M51 47c2-1 3-3 3-5-2 0-3.5 1.5-3 5zM49 43c2-1 2-3 2-5-2 0-3 2-2 5z" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"/>
     </symbol>
   </defs>
 </svg>

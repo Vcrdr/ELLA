@@ -1,90 +1,387 @@
 "use strict";
-/* ============ Utilidades ============ */
-const $=(s,r=document)=>r.querySelector(s), $$=(s,r=document)=>[...r.querySelectorAll(s)];
+
+/* =========================================================
+   ELLA — aplicação integrada
+   Visual: primeira versão
+   Funcionalidades: agenda/ciclo/serviços/consulta/apoio
+   + biblioteca de conteúdos da primeira versão
+   ========================================================= */
+
+const $=(s,r=document)=>r.querySelector(s);
+const $$=(s,r=document)=>[...r.querySelectorAll(s)];
 const esc=s=>String(s==null?"":s).replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
 const pad=n=>String(n).padStart(2,"0");
 const iso=d=>`${d.getFullYear()}-${pad(d.getMonth()+1)}-${pad(d.getDate())}`;
-const parse=s=>{const [y,m,d]=s.split("-").map(Number);return new Date(y,m-1,d)};
+const parse=s=>{const [y,m,d]=String(s).split("-").map(Number);return new Date(y,m-1,d)};
 const fmt=s=>s?parse(s).toLocaleDateString("pt-BR"):"";
 const todayS=()=>iso(new Date());
-const addDays=(d,n)=>{const x=new Date(d);x.setDate(x.getDate()+n);return x};
 const diffDays=(a,b)=>Math.round((parse(b)-parse(a))/864e5);
-const uid=()=>Date.now().toString(36)+Math.random().toString(36).slice(2,6);
-const MESES=["janeiro","fevereiro","março","abril","maio","junho","julho","agosto","setembro","outubro","novembro","dezembro"];
-const DOW=["Dom","Seg","Ter","Qua","Qui","Sex","Sáb"];
 const rel=s=>{const d=diffDays(todayS(),s);return d<0?"já passou":d===0?"hoje":d===1?"amanhã":`em ${d} dias`};
+const uid=()=>Date.now().toString(36)+Math.random().toString(36).slice(2,7);
 
-const P={ // ícones de traço simples
-calendar:'<rect x="3" y="5" width="18" height="16" rx="3"/><path d="M8 3v4M16 3v4M3 10h18"/>',
-flask:'<path d="M9 3h6M10 3v6l-5 9a2 2 0 0 0 2 3h10a2 2 0 0 0 2-3l-5-9V3"/>',
-drop:'<path d="M12 3s6 6.5 6 11a6 6 0 0 1-12 0c0-4.500 6-11 6-11z"/>',
-folder:'<path d="M3 7a2 2 0 0 1 2-2h4l2 2h8a2 2 0 0 1 2 2v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/>',
-lock:'<rect x="5" y="11" width="14" height="10" rx="3"/><path d="M8 11V8a4 4 0 0 1 8 0v3"/>',
-heart:'<path d="M12 20s-7-4.500-7-10a4 4 0 0 1 7-2.500A4 4 0 0 1 19 10c0 5.500-7 10-7 10z"/>',
-shield:'<path d="M12 3l7 3v5c0 5-3 8-7 10-4-2-7-5-7-10V6z"/>',
-pin:'<path d="M12 21s7-6 7-11a7 7 0 0 0-14 0c0 5 7 11 7 11z"/><circle cx="12" cy="10" r="2.500"/>',
-book:'<path d="M5 4h9a4 4 0 0 1 4 4v12H9a4 4 0 0 1-4-4z"/><path d="M5 16a4 4 0 0 1 4-4h9"/>',
-sun:'<circle cx="12" cy="12" r="4"/><path d="M12 2v3M12 19v3M2 12h3M19 12h3M5 5l2 2M17 17l2 2M19 5l-2 2M7 17l-2 2"/>',
-phone:'<path d="M5 4h4l2 5-2.500 1.500a11 11 0 0 0 5 5L15 13l5 2v4a2 2 0 0 1-2 2A16 16 0 0 1 3 6a2 2 0 0 1 2-2z"/>',
-users:'<circle cx="9" cy="8" r="3"/><path d="M3 20a6 6 0 0 1 12 0"/><circle cx="17" cy="9" r="2.500"/><path d="M17 14a5 5 0 0 1 4 5"/>',
-smile:'<circle cx="12" cy="12" r="9"/><path d="M8 14a5 5 0 0 0 8 0M9 9.500h.01M15 9.500h.01"/>',
-search:'<circle cx="11" cy="11" r="7"/><path d="M20 20l-4-4"/>',
-plus:'<path d="M12 5v14M5 12h14"/>',
-arrow:'<path d="M5 12h14M13 6l6 6-6 6"/>',
-back:'<path d="M19 12H5M11 6l-6 6 6 6"/>',
-syringe:'<path d="M18 2l4 4M15 5l4 4M13 7l4 4-8 8-4 1 1-4zM3 21l3-3"/>',
-alert:'<path d="M12 3l10 18H2z"/><path d="M12 10v5M12 18h.01"/>',
-leaf:'<path d="M5 19c0-9 5-14 15-14 0 10-5 15-14 15"/><path d="M5 19c3-5 6-8 10-10"/>',
-file:'<path d="M6 3h8l4 4v14H6z"/><path d="M14 3v4h4M9 13h6M9 17h6"/>',
-bell:'<path d="M6 16V11a6 6 0 0 1 12 0v5l2 2H4z"/><path d="M10 21h4"/>',
-check:'<path d="M5 12l5 5 9-10"/>'};
-const ic=n=>`<svg class="ic" viewBox="0 0 24 24" aria-hidden="true">${P[n]||""}</svg>`;
+const NAV=[
+  ["inicio","Início"],["agenda","Agenda"],["ciclo","Ciclo"],["prevencao","Prevenção"],
+  ["gestacao","Gestação"],["servicos","Serviços"],["consulta","Consulta"],["apoio","Apoio"]
+];
 
-/* ============ Dados (protótipo: ficam só neste navegador) ============ */
-const KEY="ella-prototipo-v2";
-let D={user:null,ev:[],ex:[],cy:[],doc:[],q:{}};
+const KEY="ella-prototipo-v3";
+let D={ev:[],cy:[],q:{},user:null};
 try{Object.assign(D,JSON.parse(localStorage.getItem(KEY)||"{}"))}catch(e){}
-try{ // migra dados da versão anterior
+try{
   const old=JSON.parse(localStorage.getItem("ella")||"null");
   if(old&&!localStorage.getItem(KEY)){
-    const km={Vacina:"Vacinação",Resultado:"Retorno médico",Outro:"Data importante"};
-    D.ev=(old.ev||[]).map(e=>({id:uid(),t:e.t,d:e.d,h:"",k:km[e.k]||e.k||"Lembrete pessoal",n:e.n||"",done:false}));
-    D.cy=(old.cy||[]).map(s=>({id:uid(),s,dur:"",sym:"",obs:""}));
+    D.ev=(old.ev||[]).map(e=>({id:uid(),t:e.t,d:e.d,k:e.k||"Outro",n:e.n||""}));
+    D.cy=old.cy||[];
     D.q=old.q||{};
   }
 }catch(e){}
 const save=()=>{try{localStorage.setItem(KEY,JSON.stringify(D))}catch(e){}};
 
-/* ============ Diálogo de formulário genérico ============ */
-const dlg=()=>$("#dlg");
-function fieldHtml(f,v){
-  const val=v==null?(f.def||""):v, id="f-"+f.id, req=f.req?' required aria-required="true"':"";
-  let input;
-  if(f.type==="select") input=`<select id="${id}" name="${f.id}"${req}>${f.opts.map(o=>`<option${o===val?" selected":""}>${esc(o)}</option>`).join("")}</select>`;
-  else if(f.type==="textarea") input=`<textarea id="${id}" name="${f.id}"${req} maxlength="600">${esc(val)}</textarea>`;
-  else input=`<input id="${id}" name="${f.id}" type="${f.type||"text"}" value="${esc(val)}"${req}${f.min!=null?` min="${f.min}"`:""}${f.max!=null?` max="${f.max}"`:""} maxlength="120" autocomplete="off">`;
-  return `<div class="campo"><label for="${id}">${esc(f.label)}${f.req?"":" (opcional)"}</label>${input}${f.hint?`<p class="hint">${esc(f.hint)}</p>`:""}</div>`;
-}
-function openForm({title,fields,values={},submit="Salvar",intro="",onSave}){
-  $("#dlg-title").textContent=title;
-  $("#dlg-body").innerHTML=(intro?`<p class="note">${intro}</p>`:"")+fields.map(f=>fieldHtml(f,values[f.id])).join("");
-  $("#dlg-submit").textContent=submit; $("#dlg-err").textContent="";
-  const form=$("#dlg-form");
-  form.onsubmit=e=>{
-    e.preventDefault();
-    const out={};
-    for(const f of fields){
-      const el=$("#f-"+f.id); out[f.id]=(el.value||"").trim();
-      if(f.req&&!out[f.id]){ $("#dlg-err").textContent=`Preencha o campo “${f.label}”.`; el.focus(); return; }
-    }
-    if(onSave(out)!==false) closeDlg();
-  };
-  const d=dlg(); d.showModal?d.showModal():d.setAttribute("open","");
-  const first=$("input,select,textarea",$("#dlg-body")); if(first) first.focus();
-}
-function closeDlg(){const d=dlg(); d.close?d.close():d.removeAttribute("open")}
+const app=$("#app");
+const nav=$("#nav");
 
-/* ============ Fontes oficiais ============ */
+nav.innerHTML=NAV.map(([id,label])=>
+  `<a href="#/${id}" data-route="${id}">${label}</a>`
+).join("");
+
+function setActive(id){
+  $$("#nav a").forEach(a=>a.setAttribute("aria-current",a.dataset.route===id?"page":"false"));
+}
+function go(id,replace=false){
+  const hash=`#/${id}`;
+  if(replace) history.replaceState(null,"",hash);
+  else if(location.hash!==hash) location.hash=hash;
+  renderRoute(id);
+}
+function renderRoute(id){
+  setActive(id);
+  $$("#nav a").forEach(a=>a.classList.toggle("active",a.dataset.route===id));
+  const route=id||"inicio";
+  if(route.startsWith("conteudo/")) return renderArticle(route.slice(9));
+  if(route==="conteudos") return renderContents();
+  if(route==="prevencao"){ renderContents(); return; }
+  const view=VIEWS[route]?VIEWS[route]():VIEWS.inicio();
+  app.innerHTML=view;
+  bindView(route);
+  window.scrollTo({top:0,behavior:"smooth"});
+}
+function currentRoute(){
+  const h=location.hash.replace(/^#\//,"")||"inicio";
+  return decodeURIComponent(h);
+}
+window.addEventListener("hashchange",()=>renderRoute(currentRoute()));
+
+function icon(name){
+  const p={
+    calendar:'<rect x="3" y="5" width="18" height="16" rx="3"/><path d="M8 3v4M16 3v4M3 10h18"/>',
+    drop:'<path d="M12 3s6 6.5 6 11a6 6 0 0 1-12 0c0-4.5 6-11 6-11z"/>',
+    heart:'<path d="M12 20s-7-4.5-7-10a4 4 0 0 1 7-2.5A4 4 0 0 1 19 10c0 5.5-7 10-7 10z"/>',
+    shield:'<path d="M12 3l7 3v5c0 5-3 8-7 10-4-2-7-5-7-10V6z"/>',
+    search:'<circle cx="11" cy="11" r="7"/><path d="M20 20l-4-4"/>',
+    book:'<path d="M5 4h9a4 4 0 0 1 4 4v12H9a4 4 0 0 1-4-4z"/><path d="M5 16a4 4 0 0 1 4-4h9"/>',
+    plus:'<path d="M12 5v14M5 12h14"/>'
+  };
+  return `<svg class="ic" viewBox="0 0 24 24" aria-hidden="true">${p[name]||""}</svg>`;
+}
+
+/* ---------- Home ---------- */
+function home(){
+  const upcoming=[...D.ev].filter(e=>e.d>=todayS()).sort((a,b)=>a.d.localeCompare(b.d)).slice(0,3);
+  return `<section class="hero">
+    <div class="wrap hero-in">
+      <div class="hero-copy">
+        <p class="eyebrow">Informação que vira cuidado</p>
+        <h1>Cuidar da saúde não deveria depender de lembrar de tudo.</h1>
+        <p class="lead">A ELLA ajuda mulheres e pessoas com colo do útero a organizar exames, ciclo e consultas, encontrar o serviço certo no SUS e consultar informações confiáveis.</p>
+        <div class="hero-actions">
+          <a class="btn lg" href="#/agenda">${icon("calendar")} Minha agenda</a>
+          <a class="btn alt lg" href="#/prevencao">${icon("book")} Prevenção</a>
+        </div>
+      </div>
+      <div class="carta" aria-hidden="true">
+        <svg viewBox="0 0 64 64"><use href="#emblema"/></svg>
+        <small>Acolher. Informar. Conectar.</small>
+      </div>
+    </div>
+  </section>
+  <section class="page">
+    <div class="wrap">
+      <div class="pagehead">
+        <h2>Próximos lembretes</h2>
+        <p class="lead">Tudo fica salvo somente neste navegador e neste aparelho.</p>
+      </div>
+      ${upcoming.length?`<ul class="data-list">${upcoming.map(eventLi).join("")}</ul>`:
+        `<div class="empty">Nenhum lembrete próximo. <a class="btn sm" href="#/agenda">Adicionar à agenda</a></div>`}
+      <div class="note home-notes"><b>Privacidade:</b> a ELLA não envia seus registros para servidores. Evite colocar dados pessoais sensíveis neste protótipo.</div>
+      <div class="sec" style="padding-bottom:0">
+        <div class="pagehead"><h2>O que você quer organizar?</h2><p class="lead">Acesse rapidamente as principais áreas.</p></div>
+        <div class="quick-grid">
+          ${quickCards()}
+        </div>
+      </div>
+    </div>
+  </section>`;
+}
+function quickCards(){
+ const q=[
+  ["agenda","calendar","Agenda de cuidados","Exames, consultas e vacinas com data."],
+  ["ciclo","drop","Meu ciclo","Registre menstruações e veja uma estimativa."],
+  ["prevencao","shield","Prevenção","Colo do útero, mama, pele, vacinação e mais."],
+  ["gestacao","heart","Gestação e perda gestacional","Sinais de alerta, acolhimento e informações."],
+  ["servicos","shield","Onde procurar atendimento","Descubra por onde começar no SUS."],
+  ["consulta","book","Preparar consulta","Anote sintomas, perguntas e informações importantes."],
+  ["apoio","heart","Apoio e segurança","Violência, saúde mental e canais de ajuda."]
+ ];
+ return q.map(x=>`<a class="card" href="#/${x[0]}"><div class="icon-chip">${icon(x[1])}</div><h3>${x[2]}</h3><p>${x[3]}</p><span class="more">Abrir →</span></a>`).join("");
+}
+
+/* ---------- Agenda ---------- */
+function eventLi(e){
+ const note=e.n?` · ${esc(e.n)}`:"";
+ return `<li><div><b>${esc(e.t)}</b> <span class="pill">${esc(e.k||"Outro")}</span><small>${fmt(e.d)} · ${rel(e.d)}${note}</small></div>
+ <button class="x" type="button" data-del-event="${esc(e.id)}" aria-label="Apagar ${esc(e.t)}">×</button></li>`;
+}
+function agenda(){
+ const events=[...D.ev].sort((a,b)=>a.d.localeCompare(b.d));
+ return `<section class="page"><div class="wrap">
+   <div class="view-head"><h1>Minha agenda de cuidados</h1><p class="lead">Cadastre consultas, exames, vacinas e outras datas. Você define as datas; a ELLA mostra o que está chegando.</p></div>
+   <div class="grid">
+    <div class="card">
+      <h3>Adicionar lembrete</h3>
+      <form id="event-form">
+       <div class="campo"><label for="et">O que é?</label><input id="et" required maxlength="100" placeholder="Ex.: consulta ginecológica"></div>
+       <div class="form-grid">
+        <div class="campo"><label for="ed">Data</label><input id="ed" type="date" required></div>
+        <div class="campo"><label for="ek">Tipo</label><select id="ek"><option>Exame</option><option>Consulta</option><option>Vacina</option><option>Retorno</option><option>Outro</option></select></div>
+       </div>
+       <div class="campo"><label for="en">Observação (opcional)</label><textarea id="en" maxlength="500" placeholder="O que você quer lembrar?"></textarea></div>
+       <button class="btn" type="submit">Salvar na agenda</button>
+      </form>
+    </div>
+    <div class="card">
+      <h3>Seus lembretes</h3>
+      ${events.length?`<ul class="data-list" id="event-list">${events.map(eventLi).join("")}</ul>`:`<div class="empty">Sua agenda está vazia.</div>`}
+    </div>
+   </div>
+ </div></section>`;
+}
+
+/* ---------- Ciclo ---------- */
+function cycle(){
+ const c=[...D.cy].sort();
+ let result=`<div class="empty">Nenhum registro ainda. Registre o primeiro dia de cada menstruação.</div>`;
+ if(c.length===1) result=`<div class="note">Você já registrou um início. Registre outro para que a ELLA possa calcular uma média entre ciclos.</div>`;
+ if(c.length>1){
+  const gaps=[];
+  for(let i=1;i<c.length;i++) gaps.push(Math.round((parse(c[i])-parse(c[i-1]))/864e5));
+  const avg=Math.round(gaps.reduce((a,b)=>a+b,0)/gaps.length);
+  const next=iso(new Date(parse(c[c.length-1]).getTime()+avg*864e5));
+  result=`<div class="card"><div class="big-stat">${avg} dias</div><p>duração média do ciclo (${gaps.length} ${gaps.length>1?"ciclos":"ciclo"}).</p><p>Próxima menstruação estimada: <b>${fmt(next)}</b>.</p><button class="btn alt" type="button" id="cycle-to-agenda" data-date="${next}">Criar lembrete na agenda</button></div>`;
+ }
+ return `<section class="page"><div class="wrap">
+  <div class="view-head"><h1>Meu ciclo</h1><p class="lead">Registre o primeiro dia de cada menstruação. Com dois ou mais registros, a ELLA calcula a duração média e estima a próxima.</p></div>
+  <div class="grid">
+   <div class="card"><form id="cycle-form"><div class="campo"><label for="cd">Primeiro dia da menstruação</label><input id="cd" type="date" required></div><button class="btn" type="submit">Registrar</button></form></div>
+   <div>${result}</div>
+  </div>
+  <div class="card"><h3>Registros</h3>${c.length?`<ul class="data-list">${c.slice().reverse().map(d=>`<li><span>${fmt(d)}</span><button class="x" type="button" data-del-cycle="${d}" aria-label="Apagar ${fmt(d)}">×</button></li>`).join("")}</ul>`:`<div class="empty">Nenhum registro ainda.</div>`}</div>
+  <div class="note">A previsão é uma estimativa baseada apenas nos seus registros e <b>não serve como método contraceptivo</b>. Se o ciclo mudar muito, houver sangramento fora do esperado ou dor forte, procure a UBS.</div>
+ </div></section>`;
+}
+
+/* ---------- Prevenção / biblioteca ---------- */
+function contentCard(a){
+ return `<article class="card content-card">
+   <span class="pill">${esc(a.c[0]||"Saúde")}</span>
+   <h3>${esc(a.t)}</h3><p>${esc(a.r)}</p>
+   <a class="btn alt sm more" href="#/conteudo/${encodeURIComponent(a.id)}">Ler conteúdo</a>
+ </article>`;
+}
+function renderContents(filter=""){
+ const list=filter?[...A].filter(a=>(a.t+" "+a.r+" "+a.c.join(" ")).toLowerCase().includes(filter.toLowerCase())):A;
+ app.innerHTML=`<section class="page"><div class="wrap">
+  <div class="view-head"><h1>Prevenção e informação</h1><p class="lead">Conteúdos educativos para ajudar você a entender cuidados e serviços. Eles não substituem avaliação profissional.</p></div>
+  <div class="toolbar"><input id="content-search" type="search" placeholder="Buscar assunto..." value="${esc(filter)}"><span class="pill">${list.length} conteúdo(s)</span></div>
+  <div class="content-grid">${list.length?list.map(contentCard).join(""):`<div class="empty">Não encontrei conteúdo com esse termo.</div>`}</div>
+ </div></section>`;
+ $("#content-search").addEventListener("input",e=>renderContents(e.target.value));
+ setActive("prevencao"); window.scrollTo({top:0,behavior:"smooth"});
+}
+function renderArticle(id){
+ const a=A.find(x=>x.id===id);
+ if(!a){app.innerHTML=`<section class="page"><div class="wrap"><div class="empty"><h2>Conteúdo não encontrado</h2><a class="btn" href="#/prevencao">Voltar</a></div></div></section>`;return}
+ app.innerHTML=`<section class="page"><div class="wrap article">
+   <div class="article-back"><a href="#/prevencao">← Voltar para Prevenção</a></div>
+   <div class="article-head"><span class="pill">${esc(a.c.join(" · "))}</span><h1>${esc(a.t)}</h1><p class="lead">${esc(a.r)}</p></div>
+   <div>${a.b}</div>
+   ${a.s?.length?srcInline(a.s):""}
+ </div></section>`;
+ setActive("prevencao"); window.scrollTo({top:0,behavior:"smooth"});
+}
+
+/* ---------- Gestação ---------- */
+function gestacao(){
+ const a=A.find(x=>x.id==="gestacao-perda-gestacional");
+ return `<section class="page"><div class="wrap">
+   <div class="view-head"><h1>Gestação e perda gestacional</h1><p class="lead">Informação acolhedora, sinais de alerta e orientação sobre quando procurar atendimento.</p></div>
+   <div class="alert-box"><h3>Procure atendimento agora</h3><p>Durante a gravidez, sangramento intenso, dor forte, febre, tontura ou mal-estar intenso precisam de avaliação. Em emergência, ligue <b>192 (SAMU)</b>.</p></div>
+   ${a?`<div class="card article">${a.b}${a.s?.length?srcInline(a.s):""}</div>`:""}
+ </div></section>`;
+}
+
+/* ---------- Serviços ---------- */
+const SERVICE={
+ a:["Unidade Básica de Saúde (UBS)","Vá à UBS mais próxima. O preventivo é feito na atenção primária por profissional habilitado."],
+ b:["UBS, o quanto antes","Corrimento, odor forte, lesões ou verrugas devem ser avaliados por uma equipe de saúde."],
+ c:["UBS","Vacinas do calendário e preservativos são disponibilizados na atenção primária. Consulte o calendário oficial."],
+ d:["UBS: pré-natal","Procure a UBS para iniciar o pré-natal. Em sangramento, dor forte ou febre, procure urgência."],
+ e:["Peça ajuda agora","Perigo imediato: 190. Orientação e denúncia: Ligue 180. Violência sexual: procure UBS, UPA ou hospital."],
+ f:["UBS, CAPS ou CVV","Para apoio emocional, o CVV atende pelo 188. Para acompanhamento, comece pela UBS; em emergência de saúde, 192."],
+ h:["UPA ou hospital","Sangramento, dor forte, febre ou tontura na gravidez precisam de avaliação rápida. Ligue 192 se estiver muito mal."],
+ g:["Volte à UBS que pediu o exame","Leve o resultado. A equipe define se é necessário repetir exame, fazer colposcopia ou seguir outro caminho."]
+};
+function services(){
+ return `<section class="page"><div class="wrap">
+  <div class="view-head"><h1>Onde procurar atendimento</h1><p class="lead">Escolha uma situação para ver um próximo passo geral dentro da rede de saúde.</p></div>
+  <div class="card">
+   <label for="sit">Qual é a sua situação?</label>
+   <select id="sit">
+    <option value="">Escolha…</option>
+    <option value="a">Quero fazer o preventivo ou tirar dúvidas de rotina</option>
+    <option value="b">Corrimento, odor, verrugas ou lesões</option>
+    <option value="c">Preciso de vacina ou preservativo</option>
+    <option value="d">Estou grávida ou acho que estou</option>
+    <option value="e">Estou sofrendo violência</option>
+    <option value="f">Estou mal emocionalmente</option>
+    <option value="h">Estou grávida e tenho sangramento ou dor</option>
+    <option value="g">Tive um resultado alterado</option>
+   </select>
+   <div id="service-result" class="situation"><div class="note">Escolha uma situação para ver o próximo passo.</div></div>
+  </div>
+  <div class="grid">
+   <div class="card"><h3>Levar sempre</h3><p>Documento com foto, Cartão Nacional de Saúde se tiver, exames anteriores e caderneta de vacinação quando aplicável.</p></div>
+   <div class="card"><h3>Ferramentas oficiais</h3><p><a href="https://www.gov.br/saude/pt-br/composicao/seidigi/meususdigital" target="_blank" rel="noopener">Meu SUS Digital</a> e CNES podem ajudar a consultar informações da rede.</p></div>
+  </div>
+ </div></section>`;
+}
+
+/* ---------- Consulta ---------- */
+function consulta(){
+ return `<section class="page"><div class="wrap">
+  <div class="view-head"><h1>Preparar minha consulta</h1><p class="lead">Anote antes para não esquecer nada. O conteúdo fica salvo somente neste aparelho.</p></div>
+  <div class="card">
+   <form id="consult-form">
+    <div class="campo"><label for="q1">O que me trouxe aqui / o que estou sentindo</label><textarea id="q1" maxlength="1000">${esc(D.q.q1||"")}</textarea></div>
+    <div class="form-grid">
+      <div class="campo"><label for="q2">Data da última menstruação</label><input id="q2" type="date" value="${esc(D.q.q2||"")}"></div>
+      <div class="campo"><label for="q3">Data do último preventivo</label><input id="q3" type="date" value="${esc(D.q.q3||"")}"></div>
+    </div>
+    <div class="campo"><label for="q4">Medicamentos, alergias e histórico na família</label><textarea id="q4" maxlength="1000">${esc(D.q.q4||"")}</textarea></div>
+    <div class="campo"><label for="q5">Perguntas para fazer</label><textarea id="q5" maxlength="1000">${esc(D.q.q5||"")}</textarea></div>
+    <div class="row"><button class="btn" type="submit">Salvar</button><button class="btn alt" type="button" id="print-consult">Imprimir</button><span id="consult-status" class="src"></span></div>
+   </form>
+  </div>
+  <div class="note"><b>Depois da consulta:</b> pergunte qual é o próximo passo, quando voltar e quando saem os resultados. Registre a data na Agenda.</div>
+ </div></section>`;
+}
+
+/* ---------- Apoio ---------- */
+function apoio(){
+ return `<section class="page"><div class="wrap">
+  <div class="view-head"><h1>Apoio e segurança</h1><p class="lead">Você não precisa enfrentar uma situação de violência ou sofrimento emocional sozinha.</p></div>
+  <div class="help-grid">
+   <div class="card contact-card"><div class="help-number">180</div><h3>Central de Atendimento à Mulher</h3><p>Orientação sobre direitos, denúncia e rede de proteção.</p></div>
+   <div class="card contact-card"><div class="help-number">190</div><h3>Polícia Militar</h3><p>Em perigo imediato.</p></div>
+   <div class="card contact-card"><div class="help-number">192</div><h3>SAMU</h3><p>Emergência de saúde.</p></div>
+   <div class="card contact-card"><div class="help-number">188</div><h3>CVV</h3><p>Apoio emocional por telefone ou chat.</p></div>
+  </div>
+  <div class="grid">
+   <div class="card"><h2>Para onde ir</h2><ul><li>UBS, UPA ou hospital: atendimento de saúde.</li><li>DEAM, quando existir, ou qualquer delegacia.</li><li>CRAS e CREAS: assistência social.</li><li>CAPS: cuidado em saúde mental.</li></ul></div>
+   <div class="card"><h2>Com segurança</h2><p>Se alguém controla seu aparelho, use o botão <b>Sair rápido</b> e considere limpar o histórico do navegador. Procure uma pessoa de confiança e combine uma forma segura de pedir ajuda.</p></div>
+  </div>
+  <div class="note">O ELLA não substitui atendimento profissional e não mantém telefones próprios de serviços da sua cidade. Confirme informações locais em fontes oficiais.</div>
+ </div></section>`;
+}
+
+/* ---------- Páginas institucionais ---------- */
+function institutional(title,body){
+ return `<section class="page"><div class="wrap"><div class="article">
+   <div class="view-head"><h1>${title}</h1></div>${body}
+ </div></div></section>`;
+}
+function about(){return institutional("Sobre o ELLA",`<p>A ELLA é um projeto acadêmico de informação e organização pessoal em saúde. A proposta é reunir conteúdos educativos, ajudar a organizar lembretes e facilitar o entendimento de caminhos de acesso ao SUS.</p><div class="note">A ELLA não faz diagnóstico, não interpreta exames e não substitui profissionais de saúde.</div>`)}
+function privacy(){return institutional("Privacidade",`<p>Neste protótipo, os registros da agenda, ciclo e preparação da consulta ficam armazenados localmente no navegador, neste aparelho, por meio do armazenamento local.</p><p>Não há envio desses registros para um servidor nesta versão. Ainda assim, evite inserir informações altamente sensíveis em um protótipo.</p>`)}
+function accessibility(){return institutional("Acessibilidade",`<p>A interface utiliza navegação por teclado, foco visível, estrutura semântica, textos alternativos nos elementos gráficos decorativos e suporte a redução de movimento.</p><p>Se algum componente apresentar barreira de acesso, use o contato do projeto para relatar o problema.</p>`)}
+function sources(){return institutional("Fontes",`<p>Os conteúdos da biblioteca apresentam suas fontes diretamente em cada artigo. Entre elas estão Ministério da Saúde, INCA, OMS, legislação federal e serviços oficiais.</p><div class="card">${srcList(Object.keys(S))}</div>`)}
+function publicServices(){return institutional("Serviços públicos",`<div class="grid"><div class="card"><h3>UBS</h3><p>Porta de entrada para consultas, vacinação, prevenção, pré-natal e encaminhamentos.</p></div><div class="card"><h3>UPA / hospital</h3><p>Atendimento de urgências e situações que precisam de avaliação imediata.</p></div><div class="card"><h3>CAPS</h3><p>Serviço do SUS voltado ao cuidado em saúde mental.</p></div></div>`)}
+function contact(){return institutional("Contato",`<p>O ELLA é um protótipo acadêmico. Nesta versão, não há atendimento clínico nem canal próprio de emergência.</p><p>Para situações de saúde, procure a rede do SUS. Em emergência, ligue 192.</p>`)}
+
+const VIEWS={
+ inicio:home, agenda, ciclo:cycle, prevencao:()=>{renderContents();return null},
+ gestacao, servicos:services, consulta, apoio,
+ sobre:about, privacidade:privacy, acessibilidade:accessibility, fontes:sources,
+ "servicos-publicos":publicServices, contato:contact
+};
+
+function bindView(route){
+ if(route==="agenda"){
+  const form=$("#event-form");
+  form?.addEventListener("submit",e=>{
+   e.preventDefault();
+   const t=$("#et").value.trim(),d=$("#ed").value;
+   if(!t||!d)return;
+   D.ev.push({id:uid(),t,d,k:$("#ek").value,n:$("#en").value.trim()});
+   save(); renderRoute("agenda");
+  });
+  $$("[data-del-event]").forEach(b=>b.addEventListener("click",()=>{
+   D.ev=D.ev.filter(x=>String(x.id)!==String(b.dataset.delEvent));save();renderRoute("agenda");
+  }));
+ }
+ if(route==="ciclo"){
+  $("#cycle-form")?.addEventListener("submit",e=>{
+   e.preventDefault();const d=$("#cd").value;if(!d)return;
+   if(!D.cy.includes(d))D.cy.push(d);D.cy.sort();save();renderRoute("ciclo");
+  });
+  $$("[data-del-cycle]").forEach(b=>b.addEventListener("click",()=>{
+   D.cy=D.cy.filter(x=>x!==b.dataset.delCycle);save();renderRoute("ciclo");
+  }));
+  $("#cycle-to-agenda")?.addEventListener("click",e=>{
+   D.ev.push({id:uid(),t:"Menstruação estimada",d:e.currentTarget.dataset.date,k:"Outro",n:"Estimativa do ciclo"});
+   save();go("agenda");
+  });
+ }
+ if(route==="servicos"){
+  $("#sit")?.addEventListener("change",e=>{
+   const v=SERVICE[e.target.value],out=$("#service-result");
+   out.innerHTML=v?`<div class="alert-box"><h3>${v[0]}</h3><p>${v[1]}</p></div>`:`<div class="note">Escolha uma situação para ver o próximo passo.</div>`;
+  });
+ }
+ if(route==="consulta"){
+  $("#consult-form")?.addEventListener("submit",e=>{
+   e.preventDefault();
+   ["q1","q2","q3","q4","q5"].forEach(id=>D.q[id]=$("#"+id).value);
+   save();$("#consult-status").textContent="Salvo neste aparelho.";
+  });
+  $("#print-consult")?.addEventListener("click",()=>window.print());
+ }
+}
+
+$("#btn-menu").addEventListener("click",()=>{
+ const open=nav.classList.toggle("open");
+ $("#btn-menu").setAttribute("aria-expanded",String(open));
+});
+$$("#nav a").forEach(a=>a.addEventListener("click",()=>nav.classList.remove("open")));
+
+$("#quick-exit").addEventListener("click",()=>{
+ // O comportamento de saída rápida é deliberadamente simples: leva para uma tela neutra
+ // e substitui o histórico imediato. Não tenta apagar dados, porque isso poderia destruir
+ // registros sem confirmação.
+ location.replace("about:blank");
+});
+$("#dlg [data-act='fechar']")?.addEventListener("click",()=>$("#dlg").close());
+
+
+
 const S={
  mulher:["Ministério da Saúde — Saúde da Mulher","https://www.gov.br/saude/pt-br/assuntos/saude-de-a-a-z/s/saude-da-mulher"],
  colo:["Ministério da Saúde — Diretrizes Brasileiras para o Rastreamento do Câncer do Colo do Útero","https://www.gov.br/saude/pt-br/assuntos/pcdt/r/rastreamento-cancer-do-colo-do-utero"],
@@ -106,8 +403,8 @@ const S={
  materna:["Ministério da Saúde — Saúde materna","https://www.gov.br/saude/pt-br/assuntos/saude-de-a-a-z/s/saude-da-mulher/saude-materna"],
  ms:["Ministério da Saúde","https://www.gov.br/saude/pt-br"]
 };
-const srcList=(keys)=>`<ul>${keys.map(k=>`<li><a href="${S[k][1]}" target="_blank" rel="noopener noreferrer">${esc(S[k][0])}</a></li>`).join("")}</ul>`;
-const srcInline=keys=>`<p class="src">Fontes: ${keys.map(k=>`<a href="${S[k][1]}" target="_blank" rel="noopener noreferrer">${esc(S[k][0])}</a>`).join("; ")}.</p>`;
+const srcList=(keys)=>`<ul>${keys.map(k=>S[k]?`<li><a href="${S[k][1]}" target="_blank" rel="noopener noreferrer">${esc(S[k][0])}</a></li>`:"").join("")}</ul>`;
+const srcInline=keys=>`<p class="src">Fontes: ${keys.map(k=>S[k]?`<a href="${S[k][1]}" target="_blank" rel="noopener noreferrer">${esc(S[k][0])}</a>`:"").filter(Boolean).join("; ")}.</p>`;
 
 /* ============ Biblioteca de conteúdos ============ */
 const CATS=["Prevenção","Saúde sexual","Saúde mental","Saúde ginecológica","Câncer","Dermatologia","Mulheres trans","LGBTQIA+","Violência e proteção","SUS"];
@@ -356,3 +653,7 @@ const FAQ=[
 ["Onde faço o preventivo?","Na UBS. Pergunte qual exame de rastreamento do colo do útero está disponível na sua região."],
 ["Posso ser atendida se não tenho o cartão do SUS?","Você pode ser atendida em situações de urgência e, na UBS, pode fazer o cadastro. Leve documento com foto."]
 ];
+
+/* Inicialização: ocorre depois de carregar toda a biblioteca de conteúdos. */
+if(!location.hash) history.replaceState(null,"","#/inicio");
+renderRoute(currentRoute());
