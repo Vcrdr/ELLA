@@ -101,3 +101,6 @@ body{background:radial-gradient(circle at 10% 0,var(--soft) 0,transparent 35%),r
 .arch img{border:0;border-radius:28px;box-shadow:0 14px 40px rgba(157,69,111,.18)}
 .lockup{display:block;width:150px;margin:0 auto 14px;border-radius:16px}
 footer{text-align:center}
+
+.quote{margin:18px 0;padding:16px 20px;border-left:4px solid var(--mid);background:var(--soft);border-radius:0 18px 18px 0;font:italic 1.2rem/1.45 "Bricolage Grotesque",Georgia,serif;color:var(--pri)}
+.sym span{font-size:2rem}
