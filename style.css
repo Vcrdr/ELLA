@@ -1,6 +1,6 @@
-:root{--bg:#fcf7f9;--card:#fff;--ink:#241a2e;--mut:#6a5c76;--pri:#5a3a6e;--acc:#0f8a78;--rose:#c4507a;--soft:#f7eaf0;--line:#e8d8e0;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
-@media(prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#171020;--card:#211830;--ink:#f2eaf7;--mut:#b7a8c4;--pri:#d9b3ee;--acc:#4fd1bb;--rose:#ff7fae;--soft:#2c2140;--line:#3b2d52}}
-:root[data-theme="dark"]{--bg:#171020;--card:#211830;--ink:#f2eaf7;--mut:#b7a8c4;--pri:#d9b3ee;--acc:#4fd1bb;--rose:#ff7fae;--soft:#2c2140;--line:#3b2d52}
+:root{--bg:#FFF8F8;--card:#FFFFFF;--ink:#3B2932;--mut:#6b5560;--pri:#9D456F;--acc:#9D456F;--rose:#9D456F;--soft:#FCE8EF;--line:#F2C9D9;--mid:#D98EAD;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+@media(prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#2b1d25;--card:#3B2932;--ink:#FFF8F8;--mut:#e0c7d3;--pri:#F2C9D9;--acc:#F2C9D9;--rose:#F2C9D9;--soft:#4a3340;--line:#5c4352;--mid:#D98EAD}}
+:root[data-theme="dark"]{--bg:#2b1d25;--card:#3B2932;--ink:#FFF8F8;--mut:#e0c7d3;--pri:#F2C9D9;--acc:#F2C9D9;--rose:#F2C9D9;--soft:#4a3340;--line:#5c4352;--mid:#D98EAD}
 *{box-sizing:border-box}html{scroll-padding-top:env(safe-area-inset-top,0px)}
 body{margin:0;background:var(--bg);color:var(--ink);font:17px/1.55 "Source Sans 3",system-ui,sans-serif}
 h1,h2,h3{font-family:"Bricolage Grotesque",system-ui,sans-serif;line-height:1.1;margin:0 0 .5em;color:var(--pri)}
@@ -10,7 +10,7 @@ header{position:sticky;top:env(safe-area-inset-top,0px);z-index:5;background:var
 nav{display:flex;gap:6px;overflow-x:auto;flex:1}
 nav button{border:0;background:none;color:var(--mut);font:600 15px inherit;font-family:inherit;padding:8px 12px;border-radius:99px;cursor:pointer;white-space:nowrap}
 nav button[aria-current=true]{background:var(--pri);color:var(--bg)}
-.exit{background:var(--rose);color:#fff;border:0;border-radius:99px;padding:8px 14px;font:600 14px inherit;font-family:inherit;cursor:pointer}
+.exit{background:#9D456F;color:#fff;border:0;border-radius:99px;padding:8px 14px;font:600 14px inherit;font-family:inherit;cursor:pointer}
 button:focus-visible,input:focus-visible,select:focus-visible,textarea:focus-visible,summary:focus-visible,a:focus-visible{outline:3px solid var(--acc);outline-offset:2px}
 main{max-width:860px;margin:0 auto;padding:20px 16px 60px}
 .view{display:none}.view.on{display:block}
@@ -39,7 +39,7 @@ summary{font:700 1.1rem "Bricolage Grotesque";color:var(--pri);cursor:pointer}
 details p,details li{color:var(--ink)}
 .note{background:var(--soft);border-radius:12px;padding:12px 14px;font-size:.92rem;color:var(--mut);margin:14px 0}
 .alert{border:2px solid var(--rose);border-radius:14px;padding:14px;margin:12px 0;background:var(--card)}
-.tel{font:800 1.5rem "Bricolage Grotesque";color:var(--rose)}
+.tel{font:800 1.5rem "Bricolage Grotesque";color:var(--pri)}
 footer{max-width:860px;margin:0 auto;padding:0 16px 40px;color:var(--mut);font-size:.88rem}
 @media(prefers-reduced-motion:no-preference){.view.on{animation:f .25s}@keyframes f{from{opacity:0}to{opacity:1}}}
 
@@ -49,3 +49,32 @@ details.sub summary{font-size:1rem}
 .dois{display:grid;gap:10px;grid-template-columns:repeat(auto-fit,minmax(220px,1fr))}
 .dois h4{margin:0 0 4px;font:700 .95rem "Bricolage Grotesque";color:var(--acc)}
 .dois p{margin:0}
+
+/* ===== v3: identidade Imperatriz, Minha saúde, biblioteca ===== */
+.emb{width:34px;height:34px;color:var(--mid);vertical-align:middle;margin-right:8px}
+.big-emb .emb{width:84px;height:84px;margin:0 0 6px}
+.card,details,.list li{box-shadow:0 2px 10px rgba(157,69,111,.08)}
+.card{border-radius:20px}.btn{border-radius:99px;min-height:44px}
+a.btn{display:inline-block;text-decoration:none;text-align:center}
+.lk{background:none;border:0;color:var(--pri);font:600 .95rem inherit;font-family:inherit;text-decoration:underline;cursor:pointer;padding:6px 8px;min-height:36px}
+.lk.del{color:#a3274f}
+.stabs{display:flex;gap:6px;overflow-x:auto;padding:4px 0 12px;margin-bottom:8px}
+.stabs button{border:1px solid var(--line);background:var(--card);color:var(--ink);border-radius:99px;padding:9px 14px;font:600 .9rem inherit;font-family:inherit;white-space:nowrap;cursor:pointer}
+.stabs button[aria-current=true]{background:var(--pri);color:var(--bg);border-color:var(--pri)}
+.chips{display:flex;gap:8px;flex-wrap:wrap;margin:12px 0}
+.chip{border:1px solid var(--line);background:var(--card);color:var(--ink);border-radius:99px;padding:8px 14px;font:600 .9rem inherit;font-family:inherit;cursor:pointer}
+.chip[aria-pressed=true]{background:var(--pri);color:var(--bg)}
+.cal{display:grid;grid-template-columns:repeat(7,1fr);gap:4px;margin-top:12px;text-align:center}
+.cal b{font-size:.8rem;color:var(--mut)}
+.day{position:relative;aspect-ratio:1;border:1px solid var(--line);background:var(--bg);color:var(--ink);border-radius:12px;font:600 .95rem inherit;font-family:inherit;cursor:pointer;min-height:40px}
+.day span{position:absolute;right:3px;bottom:2px;background:var(--pri);color:var(--bg);border-radius:99px;font-size:.65rem;padding:0 5px}
+.day.hoje{border-color:var(--pri);border-width:2px}.day.sel{background:var(--pri);color:var(--bg)}.day.sel span{background:var(--bg);color:var(--pri)}
+.bar{justify-content:space-between;align-items:center;margin-bottom:8px}.bar>*{flex:0 1 auto;min-width:0}
+.acts2{display:flex;flex-wrap:wrap;justify-content:flex-end}
+li.done b{text-decoration:line-through;color:var(--mut)}
+.acts{margin:14px 0}.acts>*{flex:0 1 auto}
+.lead{font-size:1.1rem}
+#toast{position:fixed;left:50%;bottom:calc(20px + env(safe-area-inset-bottom,0px));transform:translate(-50%,20px);background:#3B2932;color:#fff;padding:12px 20px;border-radius:99px;opacity:0;pointer-events:none;transition:.25s;z-index:20;max-width:90vw}
+#toast.on{opacity:1;transform:translate(-50%,0)}
+@media(max-width:560px){ul.list li{flex-direction:column;align-items:flex-start}.acts2{justify-content:flex-start}}
+@media print{header,footer,.no-print,.btn,.lk,#toast,.stabs{display:none!important}}

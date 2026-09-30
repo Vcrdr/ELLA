@@ -9,43 +9,23 @@
 </head>
 <body>
 <header>
-<span class="logo">ELLA</span>
+<span class="logo"><span class="emb-slot" aria-hidden="false"></span>ELLA</span>
 <nav id="nav" aria-label="Seções"></nav>
 <button class="exit" onclick="location.replace('https://www.google.com.br')" title="Sair rápido desta página">Sair rápido</button>
 </header>
 <main>
-
 <section class="view on" id="inicio">
-<div class="hero"><div class="tag">Informação que vira cuidado</div>
+<div class="hero"><div class="emb-slot big-emb"></div><div class="tag">Informação que vira cuidado</div>
 <h1>Cuidar da saúde não deveria depender de lembrar de tudo.</h1>
-<p>A ELLA ajuda mulheres e pessoas com colo do útero a organizar exames, ciclo e consultas, e a encontrar o serviço certo no SUS. Não faz diagnóstico e não substitui profissionais de saúde.</p></div>
-<div class="grid" id="atalhos"></div>
-<div class="card"><h3>Próximos lembretes</h3><ul class="list" id="prox"></ul></div>
-<div class="note">Seus dados ficam apenas neste navegador, neste aparelho. A ELLA não envia nada para servidores.</div>
+<p>A ELLA ajuda mulheres e pessoas com colo do útero a organizar exames, consultas e ciclo, entender sua saúde com fontes oficiais e encontrar o serviço certo no SUS.</p>
+<button class="btn" onclick="go('saude')">Começar minha jornada</button></div>
+<h2 style="margin-top:28px">Como a ELLA acolhe, informa e conecta</h2>
+<div class="grid"><div class="card"><h3>Acolhe</h3><p>Linguagem simples, sem julgamento, para mulheres de todas as idades, incluindo mulheres trans e jovens.</p></div><div class="card"><h3>Informa</h3><p>Conteúdos com links para o Ministério da Saúde, INCA e outras fontes oficiais.</p></div><div class="card"><h3>Conecta</h3><p>Leva da informação à ação: cadastrar um exame, criar um lembrete ou buscar uma unidade.</p></div></div>
+<h2>Áreas da plataforma</h2><div class="grid" id="atalhos"></div>
+<div class="card"><h3>Próximos compromissos</h3><ul class="list" id="prox"></ul></div>
+<div class="note"><b>Segurança e responsabilidade.</b> Este é um protótipo acadêmico: seus registros ficam só neste navegador, sem conta e sem servidor. Não insira dados pessoais reais de saúde. A ELLA não faz diagnósticos, não interpreta exames e não prescreve.</div>
 </section>
-
-<section class="view" id="agenda">
-<h2>Minha agenda de cuidados</h2>
-<p>Cadastre consultas, exames e vacinas. Você define as datas; a ELLA mostra o que está chegando.</p>
-<div class="card">
-<label for="et">O que é?</label><input id="et" placeholder="Ex.: Preventivo na UBS">
-<div class="row"><div><label for="ed">Data</label><input type="date" id="ed"></div>
-<div><label for="ek">Tipo</label><select id="ek"><option>Exame</option><option>Consulta</option><option>Vacina</option><option>Resultado</option><option>Outro</option></select></div></div>
-<label for="en">Observação (opcional)</label><input id="en" placeholder="Ex.: levar cartão do SUS">
-<button class="btn" onclick="addEv()">Salvar na agenda</button></div>
-<ul class="list" id="evs"></ul>
-</section>
-
-<section class="view" id="ciclo">
-<h2>Meu ciclo</h2>
-<p>Registre o primeiro dia de cada menstruação. Com dois ou mais registros, a ELLA calcula a duração média do seu ciclo e estima a próxima.</p>
-<div class="card"><label for="cd">Primeiro dia da menstruação</label><input type="date" id="cd">
-<button class="btn" onclick="addCy()">Registrar</button></div>
-<div class="card" style="margin-top:12px"><div id="cres">Nenhum registro ainda.</div></div>
-<ul class="list" id="cys"></ul>
-<div class="note">A previsão é uma estimativa baseada só nos seus registros e não serve como método contraceptivo. Se o ciclo mudar muito, houver sangramento fora do esperado ou dor forte, procure a UBS.</div>
-</section>
-
+<section class="view" id="saude"><div class="note no-print"><b>Protótipo:</b> dados ficam apenas neste navegador. Não use informações pessoais reais.</div><div class="stabs no-print" id="stabs" role="tablist" aria-label="Minha saúde"></div><div id="sbody"></div></section>
 <section class="view" id="prevencao">
 <h2>Prevenção</h2>
 <p>Resumos baseados no Ministério da Saúde. Para conferir atualizações, use sempre o link da fonte.</p>
@@ -71,10 +51,28 @@
 <p>O SUS oferece métodos contraceptivos, acompanhamento na gestação, parto e pós-parto, prevenção e tratamento de infecções sexualmente transmissíveis, atendimento a vítimas de violência sexual e interrupção gestacional nos casos previstos em lei. Fale com a UBS mais próxima.</p>
 <p><a href="https://www.gov.br/saude/pt-br/assuntos/saude-de-a-a-z/s/saude-da-mulher/saude-sexual-e-reprodutiva" target="_blank" rel="noopener">Saiba mais</a></p></details>
 <div class="note">Mais conteúdo confiável: <a href="https://www.febrasgo.org.br/campanhas-informativas/" target="_blank" rel="noopener">Febrasgo</a>, <a href="https://portaldeboaspraticas.iff.fiocruz.br/faq-perguntas-frequentes/" target="_blank" rel="noopener">Fiocruz IFF</a> e <a href="https://www.who.int/health-topics/women-s-health" target="_blank" rel="noopener">OMS</a>.</div>
-</section>
-
+<div class="note">Veja também <button class="lk" onclick="go('gestacao')">Gestação e perda gestacional</button> e a <button class="lk" onclick="go('conteudos')">biblioteca completa</button>.</div><h3 style="margin-top:22px">Aprofunde-se</h3><div class="grid" data-lib="prev"></div></section><section class="view" id="sexual"><h2>Saúde sexual</h2><p>Informação sem julgamento sobre prevenção, testagem, contracepção e relações saudáveis, para todas as mulheres, inclusive as que se relacionam com mulheres.</p><div class="grid" data-lib="sex"></div><div class="note">Outros temas (vacinação, HPV) estão em <button class="lk" onclick="go('prevencao')">Prevenção</button>. Dúvida sobre uma situação específica? Procure a UBS.</div></section>
+<section class="view" id="apoio">
+<h2>Saúde mental e violência</h2>
+<p>Você não está sozinha, e a culpa nunca é da vítima. Violência inclui agressão física, ameaça, humilhação, controle, perseguição e abuso sexual.</p>
+<div class="alert"><div class="tel">Ligue 180</div>Central de Atendimento à Mulher. Gratuita, funciona todos os dias e orienta sobre denúncia e rede de proteção.</div>
+<div class="alert"><div class="tel">190</div>Polícia Militar, em perigo imediato. <b class="tel" style="font-size:1.1rem">192</b> SAMU, emergência de saúde.</div>
+<div class="alert" style="border-color:var(--acc)"><div class="tel" style="color:var(--acc)">188</div>CVV, apoio emocional e prevenção do suicídio, com conversa por telefone ou chat.</div>
+<details open><summary>Para onde ir</summary><ul>
+<li>UBS ou hospital: atendimento a vítimas de violência sexual, com cuidados de saúde e orientação.</li>
+<li>Delegacia da Mulher (DEAM), quando existir na sua cidade, ou qualquer delegacia.</li>
+<li>CRAS e CREAS: assistência social e acompanhamento.</li>
+<li>CAPS: cuidado em saúde mental pelo SUS, pergunte na UBS como chegar.</li></ul></details>
+<details><summary>Sinais de que vale buscar apoio de saúde mental</summary>
+<p>Tristeza ou ansiedade que não passam, pressão constante, medo de alguém próximo, isolamento, insônia, perda de interesse. Não é preciso esperar piorar. Comece pela UBS.</p></details>
+<div class="note">Se alguém pode ver seu aparelho, use o botão “Sair rápido” no topo e apague o histórico do navegador.</div>
+<h3 style="margin-top:22px">Aprofunde-se</h3><div class="grid" data-lib="men"></div></section><section class="view" id="trans"><h2>Mulheres trans</h2><p>Você tem direito a atendimento respeitoso no SUS. Aqui há informação sobre acesso, acompanhamento e prevenção. A ELLA não indica medicamentos, doses nem garante a oferta de procedimentos.</p><div class="grid" data-lib="trans"></div><div class="note">Precisa conversar com alguém? Veja <button class="lk" onclick="go('apoio')">Saúde mental e proteção</button>.</div></section>
 <section class="view" id="servicos">
-<h2>Onde procurar atendimento</h2>
+<h2>Encontre um serviço</h2>
+<div class="card"><h3>Buscar perto de você</h3><p>Abre o mapa com sua busca. A ELLA ainda não tem um cadastro próprio de unidades: os resultados vêm do Google Maps, e horários e serviços devem ser confirmados por telefone.</p>
+<div class="row"><div><label for="st">Tipo de serviço</label><select id="st"><option>UBS unidade básica de saúde</option><option>Hospital</option><option>Maternidade</option><option>Sala de vacinação</option><option>CAPS saúde mental</option><option>Centro de testagem e aconselhamento IST</option><option>Ambulatório de saúde LGBTQIA+</option><option>Delegacia da Mulher</option><option>CRAS</option></select></div><div><label for="sl">Bairro e cidade</label><input id="sl" placeholder="Ex.: Centro, Nova Friburgo"></div></div>
+<button class="btn" onclick="buscaSv()">Buscar no mapa</button> <a class="btn alt" href="https://www.gov.br/mulheres/pt-br/ligue180/painel-da-rede-de-atendimento" target="_blank" rel="noopener">Rede de atendimento à mulher (oficial)</a></div>
+<h3 style="margin-top:22px">Qual serviço procurar?</h3>
 <label for="sit">Qual é a sua situação?</label>
 <select id="sit" onchange="showSv()"><option value="">Escolha…</option>
 <option value="a">Quero fazer o preventivo ou tirar dúvidas de rotina</option>
@@ -87,21 +85,9 @@
 <option value="g">Tive um resultado alterado</option></select>
 <div class="card" id="svr" style="margin-top:12px">Escolha uma situação para ver o próximo passo.</div>
 <div class="card" style="margin-top:12px"><h3>Levar sempre</h3><p>Documento com foto, Cartão Nacional de Saúde (número do SUS) se tiver, e seus exames anteriores. Tenha também o app <a href="https://www.gov.br/saude/pt-br/composicao/seidigi/meususdigital" target="_blank" rel="noopener">Meu SUS Digital</a> para consultar seu histórico. Reclamações ou elogios: Ouvidoria do SUS, ligue 136.</p></div>
-</section>
-
-<section class="view" id="consulta">
-<h2>Preparar minha consulta</h2>
-<p>Anote antes para não esquecer nada. Fica salvo aqui e você pode imprimir.</p>
-<div class="card">
-<label for="q1">O que me trouxe aqui / o que estou sentindo</label><textarea id="q1" rows="3"></textarea>
-<label for="q2">Data da última menstruação e do último preventivo</label><textarea id="q2" rows="2"></textarea>
-<label for="q3">Medicamentos, alergias e histórico na família</label><textarea id="q3" rows="3"></textarea>
-<label for="q4">Perguntas para fazer</label><textarea id="q4" rows="3"></textarea>
-<div class="row"><button class="btn" onclick="saveQ()">Salvar</button><button class="btn alt" onclick="window.print()">Imprimir</button></div>
-<p id="qs" style="color:var(--acc)"></p></div>
-<div class="note">Depois da consulta, pergunte: qual é o próximo passo, quando volto e quando saem os resultados? Registre a resposta na Agenda.</div>
-</section>
-
+</section><section class="view" id="conteudos"><h2>Conteúdos</h2><label for="lq">Buscar</label><input id="lq" type="search" oninput="rLib()" placeholder="Ex.: HIV, endometriose, consentimento"><div class="chips" id="lch"></div><div class="grid" id="lres"></div><p><button class="lk" onclick="go('referencias')">Ver todas as fontes oficiais</button></p></section>
+<section class="view" id="artigo"><article id="artc"></article></section>
+<section class="view" id="referencias"><button class="lk" onclick="go('conteudos')">← Conteúdos</button><h2>Fontes oficiais</h2><p>Links indicados pelo projeto. Os conteúdos estão em revisão: confirme sempre na fonte.</p><ul class="list" id="refl"></ul></section>
 <section class="view" id="gestacao">
 <h2>Gestação e perda gestacional</h2>
 <p>Perder uma gravidez acontece com muitas mulheres e pessoas com útero, e merece acolhimento, sem julgamento. Aqui você entende o que é o abortamento, quais sinais pedem atendimento e como a equipe de saúde costuma cuidar.</p>
@@ -134,27 +120,9 @@
 <p>Em qualquer situação de abortamento, você tem direito a atendimento de saúde humanizado e ao sigilo profissional.</p></details>
 <div class="note">Fonte: material didático de Enfermagem (2009) enviado pelo grupo, com referências à OMS/FIGO e ao Código Penal. Confirme dados, prazos e condutas nas normas atuais do Ministério da Saúde. <a href="https://www.gov.br/saude/pt-br/assuntos/saude-de-a-a-z/s/saude-da-mulher/saude-materna" target="_blank" rel="noopener">Saúde materna</a>.</div>
 </section>
-
-<section class="view" id="apoio">
-<h2>Saúde mental e violência</h2>
-<p>Você não está sozinha, e a culpa nunca é da vítima. Violência inclui agressão física, ameaça, humilhação, controle, perseguição e abuso sexual.</p>
-<div class="alert"><div class="tel">Ligue 180</div>Central de Atendimento à Mulher. Gratuita, funciona todos os dias e orienta sobre denúncia e rede de proteção.</div>
-<div class="alert"><div class="tel">190</div>Polícia Militar, em perigo imediato. <b class="tel" style="font-size:1.1rem">192</b> SAMU, emergência de saúde.</div>
-<div class="alert" style="border-color:var(--acc)"><div class="tel" style="color:var(--acc)">188</div>CVV, apoio emocional e prevenção do suicídio, com conversa por telefone ou chat.</div>
-<details open><summary>Para onde ir</summary><ul>
-<li>UBS ou hospital: atendimento a vítimas de violência sexual, com cuidados de saúde e orientação.</li>
-<li>Delegacia da Mulher (DEAM), quando existir na sua cidade, ou qualquer delegacia.</li>
-<li>CRAS e CREAS: assistência social e acompanhamento.</li>
-<li>CAPS: cuidado em saúde mental pelo SUS, pergunte na UBS como chegar.</li></ul></details>
-<details><summary>Sinais de que vale buscar apoio de saúde mental</summary>
-<p>Tristeza ou ansiedade que não passam, pressão constante, medo de alguém próximo, isolamento, insônia, perda de interesse. Não é preciso esperar piorar. Comece pela UBS.</p></details>
-<div class="note">Se alguém pode ver seu aparelho, use o botão “Sair rápido” no topo e apague o histórico do navegador.</div>
-</section>
-
 </main>
-<!-- Para mudar cores e fontes: style.css (variáveis no topo). Textos: index.html. Comportamento: script.js -->
-<footer>ELLA é um projeto acadêmico de informação e organização pessoal. Não faz diagnóstico nem indica tratamento. Em urgência, ligue 192. Fonte principal: Ministério da Saúde, página Saúde da Mulher.</footer>
-
+<footer><p>"O ELLA é uma plataforma de informação e organização em saúde. Ele não substitui avaliação, diagnóstico ou acompanhamento realizado por profissionais de saúde." Em urgência, ligue 192. <button class="lk" onclick="go('referencias')">Fontes oficiais</button></p></footer>
+<div id="toast" role="status" aria-live="polite"></div>
 <script src="script.js"></script>
 </body>
 </html>
